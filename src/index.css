@@ -388,6 +388,7 @@ h3 {
 .slide_bar {
   max-width: 1200px;
   margin: 0 auto;
+  margin-bottom: 150px;
   margin-top: 112px;
   position: relative;
 }
@@ -399,46 +400,47 @@ h3 {
   font-size: 24px;
   font-weight: 300;
 }
+/* Carousel Container */
+.carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  overflow: hidden;
+}
 
 .Carousal {
   display: flex;
   justify-content: space-evenly;
-  gap: 32px;
+  width: 100%;
+  height: 400px;
+  gap: 5px;
+  transition: transform 0.4s ease;
 }
 
-.Men_watches,
-.Women_bracelet,
-.Women_watches {
-  width: 380px;
+.slide {
+  border-radius: 5px;
+  width: 350px;
   height: 400px;
   transition: all 0.4s;
 }
 
-.Men_watches:hover,
-.Women_bracelet:hover,
-.Women_watches:hover {
+.slide:hover {
   transform: scale(1.1);
 }
 
-.Carousal_inner {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 16px;
-  font-size: 24px;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.Carousal_inner p {
-  color: #666;
+.slide-hidden {
+  display: none;
 }
 
 h6 {
-  font-weight: 300;
+  font-weight: 400;
+  margin-top: 24px;
+  font-size: 20px;
+  text-align: center;
 }
 
-/* Controls */
+/* Button Styles */
 .btn_carousal {
   background-color: #fff;
   border: none;
@@ -474,6 +476,10 @@ h6 {
   right: -5%;
   top: 50%;
   transform: translate(50%, -50%);
+}
+
+.btn--right-adjusted {
+  right: -10px;
 }
 
 .secondary_title_1 {

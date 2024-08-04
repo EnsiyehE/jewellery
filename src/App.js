@@ -3,7 +3,7 @@ import CallToAction from "./CallToAction";
 import { IonIcon } from "@ionic/react";
 import Footer from "./footer";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   callOutline,
@@ -12,7 +12,7 @@ import {
   earSharp,
 } from "ionicons/icons";
 
-import artadokht from "./data/artadokht.json";
+import artadokht from "./artadokht.json";
 
 import rings from "./images/002.jpg";
 import Braclet from "./images/BTOP.jpg";
@@ -97,66 +97,72 @@ function FeatureIn() {
 }
 
 function TopCategorySlide({ data }) {
-  const { Rings, Bracelet, Necklace, Earings } = data;
-  console.log(data);
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  const { Rings, Bracelet, Necklace, Earrings } = data;
+  const categories = [
+    { name: "Rings", src: Rings[0]?.src },
+    { name: "Bracelet", src: Bracelet[0]?.src },
+    { name: "Necklace", src: Necklace[0]?.src },
+    { name: "Earrings", src: Earrings[0]?.src },
+  ].filter((category) => category.src); // Ensure only valid categories are included
+
+  const getVisibleSlides = (index) => {
+    const totalSlides = categories.length;
+    const prevIndex = (index - 1 + totalSlides) % totalSlides;
+    const nextIndex = (index + 1) % totalSlides;
+    return [prevIndex, index, nextIndex];
+  };
+
+  const handleNext = () => {
+    setSlideIndex((prevIndex) => (prevIndex + 1) % categories.length);
+  };
+
+  const handlePrev = () => {
+    setSlideIndex(
+      (prevIndex) => (prevIndex - 1 + categories.length) % categories.length
+    );
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(handleNext, 10000); // Change slide every 10 seconds
+    return () => clearInterval(intervalId); // Cleanup on component unmount
+  }, []);
+
+  const visibleSlides = getVisibleSlides(slideIndex);
 
   return (
     <div className="slide_bar">
       <h2 className="secondary_title">Top Categories</h2>
       <div className="Carousal">
-        <div>
-          <img src={rings} alt="Rings" className="Men_watches" />
-          <a href="/" className="Carousal_inner">
-            <p>Rings</p>
-            <h6>Disvover now </h6>
-          </a>
-        </div>
-
-        <div>
-          <img src={Braclet} alt="Womenbracelets" className="Women_bracelet" />
-          <a href="/" className="Carousal_inner">
-            <p>Bracelet</p>
-            <h6>Discover now</h6>
-          </a>
-        </div>
-
-        <div>
-          <img src={Earrings} alt="Womenbracelets" className="Women_watches" />
-          <a href="/" className="Carousal_inner">
-            <p>Women's Earrings</p>
-            <h6>Discover now</h6>
-          </a>
-        </div>
-
-        {/* <div>
-          <img
-            src={Necklace}
-            alt="Women's Necklace"
-            className="Women_watches"
+        {categories.map((category, index) => {
+          const isVisible = visibleSlides.includes(index);
+          return (
+            <div
+              key={index}
+              className={`slide-wrapper ${isVisible ? "" : "slide-hidden"}`}
+            >
+              <img src={category.src} alt={category.name} className="slide" />
+              <h6>{category.name}</h6>
+            </div>
+          );
+        })}
+        <div className="carousel-controls">
+          <Buttons
+            onPrev={handlePrev}
+            onNext={handleNext}
+            rightButtonClass="btn--right-adjusted" // Adjust button position if needed
           />
-          <a href="/" className="Carousal_inner">
-            <p>Women's Necklace</p>
-            <h6>Discover now</h6>
-          </a>
         </div>
-
-        <div>
-          <img src={bag} alt="Womenbracelets" className="Women_watches" />
-          <a href="/" className="Carousal_inner">
-            <p>Women's Purses</p>
-            <h6>Discover now</h6>
-          </a>
-        </div> */}
       </div>
-      <Buttons />
     </div>
   );
 }
 
-function Buttons() {
+function Buttons({ onPrev, onNext, rightButtonClass }) {
   return (
     <>
-      <button className="btn_carousal btn--left">
+      <button className="btn_carousal btn--left" onClick={onPrev}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -173,7 +179,12 @@ function Buttons() {
         </svg>
       </button>
 
-      <button className="btn_carousal btn--right">
+      <button
+        className={`btn_carousal btn--right ${
+          rightButtonClass ? rightButtonClass : ""
+        }`}
+        onClick={onNext}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -192,7 +203,6 @@ function Buttons() {
     </>
   );
 }
-
 function BrandDiversity() {
   return (
     <div className="slide_bar">
@@ -203,7 +213,7 @@ function BrandDiversity() {
         <img src={jewlery3} alt="third brand" />
         <img src={jewlery4} alt="fourth brand" />
       </div>
-      <Buttons />
+      <Buttons rightButtonClass="" />
     </div>
   );
 }

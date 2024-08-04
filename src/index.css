@@ -136,9 +136,12 @@ h3 {
 }
 
 .logo {
-  height: 6rem;
+  height: 8rem;
   margin-top: 0.5rem;
-  width: 6.8rem;
+  width: 8rem;
+  margin-top: 40px;
+  margin-bottom: 22px;
+  padding: 10px 0;
 }
 
 .header-main {
@@ -161,7 +164,7 @@ h3 {
   display: flex;
   height: auto;
   justify-content: normal;
-  gap: 2rem;
+  gap: 4rem;
 }
 
 .nav--list {
@@ -180,31 +183,58 @@ h3 {
   color: #666;
   cursor: pointer;
 }
-.nav--list:hover > .submenu,
-.submenu:hover {
-  display: block;
-}
-
+/* Ensure the submenu has a high z-index to be on top */
 .submenu {
   position: absolute;
-  top: calc(100% + 16px); /* Adjust the spacing here */
+  top: 100%; /* Move submenu further down */
+  margin-top: 16px;
   left: 0;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: none;
-  padding: 20px; /* Adjust the padding here */
-  width: 300px; /* Adjust the width here */
-  z-index: 1000;
+  visibility: hidden; /* Hide by default */
+  opacity: 0; /* Hide by default */
+  transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition */
+  padding: 20px; /* Adjust the padding */
+  width: 50vw; /* Width up to half of the viewport width */
+  max-width: 1200px; /* Max width to prevent it from being too wide */
+  height: 800px; /* Fixed height to make it more square */
+  z-index: 9999; /* Ensure it is on top */
   border-radius: 10px;
+  display: flex; /* Use Flexbox */
+  flex-direction: column; /* Arrange items in a column */
 }
 
+/* Show submenu on parent hover and when hovering over the submenu */
+.nav--list:hover > .submenu,
 .submenu:hover {
-  display: block;
+  visibility: visible; /* Make visible */
+  opacity: 1; /* Fully opaque */
 }
-.submenu-title {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 12px; /* Adjust the spacing between title and items here */
+
+/* Ensure background blur effect is removed when not hovering */
+.nav--list:not(:hover) {
+  backdrop-filter: none;
+}
+
+/* Submenu items styling */
+.submenu ul {
+  list-style-type: none; /* Remove default list styling */
+  padding: 0;
+  margin: 0;
+  display: flex; /* Use Flexbox for layout */
+  flex-direction: column; /* Arrange items in a column */
+  gap: 20px; /* Adjust space between items if needed */
+}
+
+.submenu ul li {
+  display: flex; /* Flexbox for submenu items */
+}
+
+.submenu ul li a {
+  display: block; /* Make links block level */
+  padding: 8px 0; /* Adjust padding */
+  color: #666;
+  text-decoration: none;
 }
 
 .submenu ul {
@@ -213,30 +243,122 @@ h3 {
   margin: 0;
 }
 
-.submenu ul li a {
-  display: block;
-  padding: 8px 0; /* Adjust the padding here */
-  color: #666;
-  text-decoration: none;
+/* Styling for submenu items with images */
+.submenu-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #eee;
 }
 
-.submenu ul li a:hover {
+.submenu-item:last-child {
+  border-bottom: none;
+}
+
+.submenu-item img {
+  width: 90px; /* Adjust size as needed */
+  height: 90px; /* Adjust size as needed */
+  margin-right: 10px; /* Space between image and text */
+  object-fit: cover; /* Ensure image fits well */
+}
+
+.submenu-item a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+  width: 100%;
+}
+
+.submenu-item a:hover {
   background-color: #f0f0f0;
 }
 
+/* Search bar container */
+.search-bar {
+  position: relative; /* Ensure submenu is positioned correctly */
+}
+
+/* Search input field */
 .search-input {
   padding-bottom: 20px;
-  background-image: url(./images/search-icon-png-8.png);
-  background-size: 35px;
+  background-image: url("./images/search-icon-png-8.png"); /* Ensure correct path */
+  background-size: 38px; /* Increase size of the background image */
   background-position: left center;
   background-repeat: no-repeat;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  padding: 0.875rem 0 0.875rem 1.875rem;
+  padding: 0.75rem 0 0.75rem 2.75rem; /* Adjust padding to fit larger icon */
   border-radius: 5px;
-  width: 108%;
-  height: 40%;
-  margin-right: 40px;
+  width: 100%; /* Adjust width to fit container */
+  height: 50px; /* Fixed height */
+  margin-right: 60px;
+}
+
+/* Search results container */
+.submenu-search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 300px; /* Adjust as needed */
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 1000;
+  display: none; /* Hidden by default */
+}
+
+/* Display search results when input is not empty */
+.search-input:not(:placeholder-shown) ~ .submenu-search-results {
+  display: block;
+}
+
+.submenu-item-image {
+  width: 40px; /* Adjust width of the image */
+  height: 40px; /* Adjust height of the image */
+  object-fit: cover; /* Ensure the image covers the area without distortion */
+  margin-right: 10px; /* Space between image and text */
+}
+
+/* Styling for individual search results */
+.submenu-search-results ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.submenu-search-results li {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.submenu-search-results li:last-child {
+  border-bottom: none;
+}
+
+.submenu-search-results a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+  width: 100%;
+}
+
+.submenu-search-results a:hover {
+  background-color: #f0f0f0;
+}
+
+/* Message for no search results */
+.submenu-message {
+  padding: 1rem;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+/* Empty state class for hiding results */
+.submenu-search-results.empty {
+  display: none;
 }
 
 .Feature_in {
@@ -287,8 +409,8 @@ h3 {
 .Men_watches,
 .Women_bracelet,
 .Women_watches {
-  max-width: 400px;
-  max-height: 400px;
+  width: 380px;
+  height: 400px;
   transition: all 0.4s;
 }
 
@@ -305,6 +427,7 @@ h3 {
   margin: 16px;
   font-size: 24px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .Carousal_inner p {
@@ -814,7 +937,11 @@ h6 {
   margin: 0;
 }
 
+/* Style for search results list */
 .nav-list-level3 li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 3px;
 }
 

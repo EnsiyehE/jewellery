@@ -1,4 +1,4 @@
-import brand from "./images/brand.jpg";
+import brand from "./images/artadokht.jpg";
 import paypal from "./images/paypal.png";
 import Visacard from "./images/visa.png";
 import Master from "./images/Mastercard.png";

@@ -9,11 +9,16 @@ import {
   callOutline,
   calendarClearOutline,
   storefrontOutline,
+  earSharp,
 } from "ionicons/icons";
 
-import menwatch from "./images/menwatch.jpg";
-import Braclet from "./images/bracelet.jpg";
-import womenwatch from "./images/womenwatches.jpg";
+import artadokht from "./data/artadokht.json";
+
+import rings from "./images/002.jpg";
+import Braclet from "./images/BTOP.jpg";
+import Earrings from "./images/ETOP.jpg";
+// import Necklace from "./images/NeckTop.jpg";
+import bag from "./images/women's bag.jpg";
 import jewlery1 from "./images/jewelry1.png";
 import jewlery2 from "./images/jewelry2.png";
 import jewlery3 from "./images/jewlery3.webp";
@@ -24,13 +29,13 @@ import image2 from "./images/image2.webp";
 import image3 from "./images/image3.jpg";
 import image4 from "./images/image4.webp";
 
-export default function App() {
+function App() {
   return (
     <div>
       <Nav />
       <HeroSection />
       <FeatureIn />
-      <TopCategorySlide />
+      <TopCategorySlide data={artadokht} />
       <BrandDiversity />
       <FeaturedCombine />
       <CallToAction />
@@ -91,38 +96,57 @@ function FeatureIn() {
   );
 }
 
-function TopCategorySlide() {
+function TopCategorySlide({ data }) {
+  const { Rings, Bracelet, Necklace, Earings } = data;
+  console.log(data);
+
   return (
     <div className="slide_bar">
       <h2 className="secondary_title">Top Categories</h2>
       <div className="Carousal">
         <div>
-          <img src={menwatch} alt="menWatches" className="Men_watches" />
-          <a className="Carousal_inner">
-            <p>for him</p>
-            <h6>Men's Watches</h6>
+          <img src={rings} alt="Rings" className="Men_watches" />
+          <a href="/" className="Carousal_inner">
+            <p>Rings</p>
+            <h6>Disvover now </h6>
           </a>
         </div>
 
         <div>
           <img src={Braclet} alt="Womenbracelets" className="Women_bracelet" />
-          <a className="Carousal_inner">
-            <p>Braclet</p>
+          <a href="/" className="Carousal_inner">
+            <p>Bracelet</p>
             <h6>Discover now</h6>
           </a>
         </div>
 
         <div>
-          <img
-            src={womenwatch}
-            alt="Womenbracelets"
-            className="Women_watches"
-          />
-          <a className="Carousal_inner">
-            <p>Women's Watches</p>
+          <img src={Earrings} alt="Womenbracelets" className="Women_watches" />
+          <a href="/" className="Carousal_inner">
+            <p>Women's Earrings</p>
             <h6>Discover now</h6>
           </a>
         </div>
+
+        {/* <div>
+          <img
+            src={Necklace}
+            alt="Women's Necklace"
+            className="Women_watches"
+          />
+          <a href="/" className="Carousal_inner">
+            <p>Women's Necklace</p>
+            <h6>Discover now</h6>
+          </a>
+        </div>
+
+        <div>
+          <img src={bag} alt="Womenbracelets" className="Women_watches" />
+          <a href="/" className="Carousal_inner">
+            <p>Women's Purses</p>
+            <h6>Discover now</h6>
+          </a>
+        </div> */}
       </div>
       <Buttons />
     </div>
@@ -287,3 +311,5 @@ function FeaturedCombine() {
     </div>
   );
 }
+
+export default App;

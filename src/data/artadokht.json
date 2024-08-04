@@ -1,0 +1,69 @@
+{
+  "Rings": [
+    {
+      "Code": "002",
+      "Price": "24.99",
+      "size": "7",
+      "image": "src/data/003.heic"
+    },
+    {
+      "Code": "003",
+      "Price": "24.99",
+      "size": "6.5",
+      "image": "src/data/003.heic"
+    },
+    {
+      "Code": "001",
+      "Price": "12.5",
+      "size": "7",
+      "image": "src/data/001.heic"
+    }
+  ],
+  "Bracelet": [
+    {
+      "Code": "012",
+      "Price": "25.00",
+      "image": "src/data/012.jpg"
+    },
+    {
+      "Code": "010",
+      "Price": "21.50",
+      "image": "src/data/010.jpg"
+    }
+  ],
+  "Necklace": [
+    {
+      "Code": "013",
+      "Price": "27.99",
+      "image": "src/data/013.jpg"
+    },
+    {
+      "Code": "008",
+      "Price": "23.50",
+      "size": "7",
+      "image": "src/data/08.jpg"
+    }
+  ],
+  "Earings": [
+    {
+      "Code": "005",
+      "Price": "36.50",
+      "image": "src/data/05.heic"
+    },
+    {
+      "Code": "009",
+      "Price": "36.50",
+      "image": "src/data/09.jpg"
+    },
+    {
+      "Code": "014",
+      "Price": "10.0",
+      "image": "src/data/014.jpg"
+    },
+    {
+      "Code": "015",
+      "Price": "10.0",
+      "image": "src/data/015.heic"
+    }
+  ]
+}

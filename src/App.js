@@ -15,16 +15,14 @@ import {
 import artadokht from "./artadokht.json";
 
 import bag from "./images/women's bag.jpg";
-import jewlery1 from "./images/jewelry1.png";
-import jewlery2 from "./images/jewelry2.png";
-import jewlery3 from "./images/jewlery3.webp";
-import jewlery4 from "./images/jewlery4.jpg";
+
 import mixingmetals from "./images/mixing metals.webp";
 import image1 from "./images/image1.jpg";
 import image2 from "./images/image2.webp";
 import image3 from "./images/image3.jpg";
 import image4 from "./images/image4.webp";
-
+import picture1 from "./images/Rings.jpg";
+import picture2 from "./images/minimal-summer-sale-50-percent-off-banner-template-design-vector.jpg";
 function App() {
   return (
     <div>
@@ -41,20 +39,53 @@ function App() {
 }
 
 function HeroSection() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    { id: 1, text: "The biggest Sale", buttonClass: "btn", image: picture1 },
+    { id: 2, text: "Explore now", buttonClass: "btn1", image: picture2 },
+  ];
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(nextSlide, 10000); // Change slide every 10 seconds
+    return () => clearInterval(intervalId); // Cleanup on component unmount
+  }, []); // Empty dependency array means this effect runs only once
+
   return (
-    <div className="container">
-      <div className="item1">
-        <div className="text-box">
-          <h3>The biggest Sale </h3>
-          <button className="btn">More info</button>
-        </div>
+    <div className="carousel-container-Hero">
+      <div className="carousel-Hero">
+        {slides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className={`carousel-item ${
+              index === currentSlide ? "active" : ""
+            }`}
+            style={{
+              backgroundImage: `url(${slide.image})`,
+            }}
+          >
+            {index === 0 && (
+              <div className="text-box">
+                <button className={slide.buttonClass}>SHOP NOW</button>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
-      <div className="item2">
-        <div className="text-box-2">
-          <h3>Explore now</h3>
-          <button className="btn1">More info</button>
-        </div>
-      </div>
+      <button className="carousel-control prev" onClick={prevSlide}>
+        ‹
+      </button>
+      <button className="carousel-control next" onClick={nextSlide}>
+        ›
+      </button>
     </div>
   );
 }

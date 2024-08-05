@@ -14,10 +14,6 @@ import {
 
 import artadokht from "./artadokht.json";
 
-import rings from "./images/002.jpg";
-import Braclet from "./images/BTOP.jpg";
-import Earrings from "./images/ETOP.jpg";
-// import Necklace from "./images/NeckTop.jpg";
 import bag from "./images/women's bag.jpg";
 import jewlery1 from "./images/jewelry1.png";
 import jewlery2 from "./images/jewelry2.png";
@@ -36,7 +32,7 @@ function App() {
       <HeroSection />
       <FeatureIn />
       <TopCategorySlide data={artadokht} />
-      <BrandDiversity />
+      <BrandDiversity data={artadokht} />
       <FeaturedCombine />
       <CallToAction />
       <Footer />
@@ -203,17 +199,49 @@ function Buttons({ onPrev, onNext, rightButtonClass }) {
     </>
   );
 }
-function BrandDiversity() {
+
+// Function to shuffle an array
+const shuffleArray = (array) => {
+  let shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+function BrandDiversity({ data }) {
+  // Flatten the data into an array of items
+  const allItems = Object.keys(data).flatMap((category) =>
+    data[category].map((item) => ({ ...item, category }))
+  );
+
+  const [items, setItems] = useState(shuffleArray(allItems));
+
+  useEffect(() => {
+    setItems(shuffleArray(allItems));
+  }, [data]);
+
+  const handleNext = () => {
+    setItems((prevItems) => shuffleArray(prevItems));
+  };
+
+  // Handle shuffling when the "Previous" button is clicked
+  const handlePrev = () => {
+    setItems((prevItems) => shuffleArray(prevItems));
+  };
+
   return (
-    <div className="slide_bar">
+    <div className="slide_bar brand">
       <h2 className="secondary_title_1">Our Brand Diversity</h2>
       <div className="logos">
-        <img src={jewlery1} alt="first brand" />
-        <img src={jewlery2} alt="second brand" />
-        <img src={jewlery3} alt="third brand" />
-        <img src={jewlery4} alt="fourth brand" />
+        {items.map((item, index) => (
+          <div key={`${item.category}-${index}`} className="slide-wrapper">
+            <img src={item.src} alt={item.category} className="slide" />
+          </div>
+        ))}
       </div>
-      <Buttons rightButtonClass="" />
+      <Buttons onPrev={handlePrev} onNext={handleNext} rightButtonClass="" />
     </div>
   );
 }

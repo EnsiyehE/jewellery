@@ -10,13 +10,13 @@
       "Code": "003",
       "Price": "24.99",
       "size": "6.5",
-      "src": "data/003.heic"
+      "src": "data/003.jpg"
     },
     {
       "Code": "001",
       "Price": "12.5",
       "size": "7",
-      "src": "data/001.heic"
+      "src": "data/001.jpg"
     }
   ],
   "Bracelet": [
@@ -40,8 +40,7 @@
     {
       "Code": "008",
       "Price": "23.50",
-      "size": "7",
-      "src": "data/08.jpg"
+      "src": "data/008.jpg"
     }
   ],
   "Earrings": [
@@ -63,7 +62,7 @@
     {
       "Code": "015",
       "Price": "10.0",
-      "src": "data/015.heic"
+      "src": "data/015.jpg"
     }
   ]
 }

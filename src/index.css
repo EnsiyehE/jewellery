@@ -503,6 +503,19 @@ h6 {
   width: auto;
 }
 
+.slide-wrapper {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.slide-wrapper.fade-out {
+  opacity: 0;
+}
+
+.brand {
+  gap: 18px;
+}
+
 .outer_Box {
   margin-top: 116px;
   background-color: #e4dcd19c;

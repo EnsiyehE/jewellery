@@ -12,6 +12,8 @@ import ringsImg from "./images/Rings.jpg";
 import bagsImg from "./images/Bags.jpg";
 import ModalWindow from "./Modal";
 import React, { useEffect, useState } from "react";
+import Pay from "./Pay";
+
 export default function Nav() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -156,8 +158,13 @@ function NavBanner({ onLoginClick, onRegisterClick }) {
     </div>
   );
 }
-
 function NavMeta() {
+  const [showPayComponent, setShowPayComponent] = useState(false);
+
+  const handleClick = () => {
+    setShowPayComponent(!showPayComponent);
+  };
+
   return (
     <div className="Meta">
       <div className="logo-container">
@@ -172,10 +179,11 @@ function NavMeta() {
         <a>
           <IonIcon icon={heartOutline} className="meta-icon" />
         </a>
-        <a>
+        <a onClick={handleClick}>
           <IonIcon icon={bagHandleOutline} className="meta-icon" />
         </a>
       </div>
+      {showPayComponent && <Pay />}
     </div>
   );
 }

@@ -976,3 +976,55 @@ h6 {
   color: #666;
   font-size: 14px;
 }
+.selected-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-input-btn {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #fff;
+}
+
+.btn button {
+  width: 30px; /* Adjust button size as needed */
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toPay {
+  display: inline-block;
+  width: 300px; /* Adjust width as needed */
+  padding: 10px; /* Adjust padding for better appearance */
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  background-color: #ebe71e;
+}
+
+.toPay:hover,
+.toPay:visited {
+  background-color: #b3b015;
+}
+
+.paypal-icon {
+  height: 24px;
+  width: 24px;
+}
+
+.pay-icon {
+  font-size: 24px;
+  vertical-align: middle;
+  height: 24px;
+  width: 24px;
+}

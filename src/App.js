@@ -21,7 +21,7 @@ import image1 from "./images/image1.jpg";
 import image2 from "./images/image2.webp";
 import image3 from "./images/image3.jpg";
 import image4 from "./images/image4.webp";
-import picture1 from "./images/Rings.jpg";
+import picture1 from "./images/artadokht.jpg";
 import picture2 from "./images/minimal-summer-sale-50-percent-off-banner-template-design-vector.jpg";
 function App() {
   return (
@@ -57,7 +57,7 @@ function HeroSection() {
   useEffect(() => {
     const intervalId = setInterval(nextSlide, 10000); // Change slide every 10 seconds
     return () => clearInterval(intervalId); // Cleanup on component unmount
-  }, []); // Empty dependency array means this effect runs only once
+  }, []);
 
   return (
     <div className="carousel-container-Hero">

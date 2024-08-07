@@ -987,10 +987,15 @@ h6 {
   gap: 60px;
 }
 
-.btn {
+.plus {
   display: flex;
   align-items: center;
   gap: 5px;
+  justify-content: center;
+  background-color: #fff;
+}
+
+.plus:hover {
   background-color: #fff;
 }
 

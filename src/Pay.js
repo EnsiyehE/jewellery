@@ -29,7 +29,7 @@ export default function Pay() {
             <label htmlFor="Item-X">Item-X</label>
             <div className="item-input-btn">
               <input id="Item-X" type="text" placeholder="Item-X" required />
-              <div className="btn">
+              <div className="btn plus">
                 <button>-</button>
                 <button>+</button>
               </div>

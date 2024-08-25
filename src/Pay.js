@@ -3,9 +3,40 @@ import React, { useState } from "react";
 import { IonIcon } from "@ionic/react";
 import { logoPaypal } from "ionicons/icons";
 
+
+const createOrder = async () => {
+
+  try {
+    const response = await fetch('https://localhost:7271/Paypal', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.Message);
+    }
+
+    const responseData = await response.json();
+    console.log('Order created successfully:', responseData);
+    // Handle the response data as needed
+  } catch (error) {
+    console.error('Error creating order:', error.message);
+    // Handle errors appropriately
+  }
+};
+
 export default function Pay() {
   const [isModalOpen, setIsModalOpen] = useState(true);
 
+  //to handle the click.
+  const handleClick = (event) => {
+    event.preventDefault(); // Prevent default button behavior
+    createOrder();
+    // Optionally, you can navigate or perform other actions after creating the order
+  };
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
@@ -36,7 +67,7 @@ export default function Pay() {
             </div>
           </div>
 
-          <button className="btn btn--form toPay">
+          <button className="btn btn--form toPay" onClick={handleClick}>
             <span>to Pay</span>
             <IonIcon icon={logoPaypal} className="pay-icon" />
           </button>

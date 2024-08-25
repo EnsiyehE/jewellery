@@ -4,9 +4,16 @@ import {
   heartOutline,
   bagHandleOutline,
 } from "ionicons/icons";
-import brand from "./images/brand.jpg";
+import brand from "./images/artadokht.jpg";
+import earringsImg from "./images/Earings.JPG";
+import necklaceImg from "./images/Necklace.JPG";
+import braceletsImg from "./images/Brace.JPG";
+import ringsImg from "./images/Rings.jpg";
+import bagsImg from "./images/Bags.jpg";
 import ModalWindow from "./Modal";
 import React, { useEffect, useState } from "react";
+import Pay from "./Pay";
+
 export default function Nav() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -151,8 +158,13 @@ function NavBanner({ onLoginClick, onRegisterClick }) {
     </div>
   );
 }
-
 function NavMeta() {
+  const [showPayComponent, setShowPayComponent] = useState(false);
+
+  const handleClick = () => {
+    setShowPayComponent(!showPayComponent);
+  };
+
   return (
     <div className="Meta">
       <div className="logo-container">
@@ -167,39 +179,51 @@ function NavMeta() {
         <a>
           <IonIcon icon={heartOutline} className="meta-icon" />
         </a>
-        <a>
+        <a onClick={handleClick}>
           <IonIcon icon={bagHandleOutline} className="meta-icon" />
         </a>
       </div>
+      {showPayComponent && <Pay />}
     </div>
   );
 }
-
-function SubMenu({ title, items }) {
-  return (
-    <div className="submenu">
-      <span className="submenu-title">{title}</span>
-      <ul>
-        {items.map((item, index) => (
-          <li key={index}>
-            <a href="/">{item}</a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 const menuItems = [
-  { title: "Jewelery", items: ["Earrings", "Necklaces", "Bracelets"] },
-  { title: "Watches", items: ["Analog Watches", "Digital Watches"] },
-  { title: "Brands", items: ["Brand 1", "Brand 2", "Brand 3"] },
-  { title: "Perimum", items: ["Item 1", "Item 2", "Item 3"] },
-  { title: "Gifts", items: ["Item A", "Item B", "Item C"] },
-  { title: "Engagement & Wedding", items: ["Item X", "Item Y", "Item Z"] },
-  { title: "Service and Help", items: ["Help 1", "Help 2", "Help 3"] },
-  { title: "Sale", items: ["Sale Item 1", "Sale Item 2", "Sale Item 3"] },
-  { title: "2nd Chance", items: ["Chance 1", "Chance 2", "Chance 3"] },
+  {
+    title: "Jewelery",
+    items: [
+      { name: "Earrings", image: earringsImg },
+      { name: "Necklaces", image: necklaceImg },
+      { name: "Bracelets", image: braceletsImg },
+      { name: "Rings", image: ringsImg },
+    ],
+  },
+  {
+    title: "Watches",
+    items: [{ name: "Analog Watches" }, { name: "Digital Watches" }],
+  },
+  {
+    title: "Bags",
+    items: [
+      { name: "Women", image: bagsImg },
+      { name: "Men" }, // No image for "Men"
+    ],
+  },
+  {
+    title: "Gifts",
+    items: [{ name: "Men" }, { name: "Women" }],
+  },
+  {
+    title: "Service and Help",
+    items: [{ name: "Contact us" }, { name: "About Us" }],
+  },
+  {
+    title: "Sale",
+    items: [
+      { name: "Sale Summer" },
+      { name: "Sale Winter" },
+      { name: "Sale Spring" },
+    ],
+  },
 ];
 
 function NavWrapper() {
@@ -217,13 +241,15 @@ function NavWrapper() {
 
   useEffect(() => {
     if (searchedWord.trim() !== "") {
-      const results = menuItems.filter(
-        (item) =>
-          item.title.toLowerCase().includes(searchedWord.toLowerCase()) ||
-          item.items.some((subItem) =>
-            subItem.toLowerCase().includes(searchedWord.toLowerCase())
-          )
-      );
+      const results = menuItems
+        .map((category) => ({
+          ...category,
+          items: category.items.filter((item) =>
+            item.name.toLowerCase().includes(searchedWord.toLowerCase())
+          ),
+        }))
+        .filter((category) => category.items.length > 0);
+
       setSearchResults(results);
     } else {
       setSearchResults([]);
@@ -232,14 +258,22 @@ function NavWrapper() {
 
   const currentTitle = menuItems[currentTitleIndex].title;
 
+  const handleSubMenuClick = (event, item) => {
+    event.preventDefault(); // Prevents the default action (e.g., page refresh)
+    alert(`You clicked on ${item}`);
+  };
+
   return (
     <div className="wrapper">
       <nav>
         <ul className="nav-list-level1">
           {menuItems.map((menuItem, index) => (
             <li key={index} className="nav--list">
-              <a>{menuItem.title}</a>
-              <SubMenu items={menuItem.items} />
+              <a href="/">{menuItem.title}</a>
+              <SubMenu
+                items={menuItem.items}
+                onItemClick={handleSubMenuClick}
+              />
             </li>
           ))}
         </ul>
@@ -252,28 +286,66 @@ function NavWrapper() {
           value={searchedWord}
           onChange={(e) => setSearchWord(e.target.value)}
         />
-        {searchResults.length > 0 ? (
-          <div className="submenu">
-            <ul className="nav-list-level2">
-              {searchResults.map((item, index) => (
+        <div
+          className={`submenu-search-results ${
+            searchedWord.trim() === "" ? "empty" : ""
+          }`}
+        >
+          {searchedWord.trim() && searchResults.length > 0 ? (
+            <ul>
+              {searchResults.map((category, index) => (
                 <li key={index} className="subitem">
                   <ul className="nav-list-level3">
-                    {item.items.map((subItem, subIndex) => (
+                    {category.items.map((subItem, subIndex) => (
                       <li key={subIndex}>
-                        <a>{subItem}</a>
+                        {subItem.image && (
+                          <img
+                            src={subItem.image}
+                            alt={subItem.name}
+                            className="submenu-item-image"
+                          />
+                        )}
+                        <a
+                          href="/"
+                          onClick={(e) => handleSubMenuClick(e, subItem.name)}
+                        >
+                          {subItem.name}
+                        </a>
                       </li>
                     ))}
                   </ul>
                 </li>
               ))}
             </ul>
-          </div>
-        ) : (
-          <div className="submenu">
-            <p className="submenu-message">No results found</p>
-          </div>
-        )}
+          ) : (
+            searchedWord.trim() && (
+              <p className="submenu-message">No results found</p>
+            )
+          )}
+        </div>
       </div>
+    </div>
+  );
+}
+function SubMenu({ items, onItemClick }) {
+  return (
+    <div className="submenu">
+      <ul>
+        {items.map((item, index) => (
+          <li key={index} className="submenu-item">
+            <a href="/" onClick={(e) => onItemClick(e, item.name)}>
+              {item.name}
+            </a>
+            {item.image && (
+              <img
+                src={item.image}
+                alt={item.name}
+                className="submenu-item-image"
+              />
+            )}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

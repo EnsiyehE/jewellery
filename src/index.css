@@ -10,84 +10,85 @@ body {
   font-weight: 150;
 }
 
-.container {
+.carousel-container-Hero {
+  position: relative;
   max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  gap: 10px;
-  grid-template-columns: 2fr 1fr;
-  /* justify-content: center; */
-  height: 300px;
-  padding: 38px 50px;
+  margin: 40px auto;
+  overflow: hidden;
 }
 
-.item1 {
-  background-image: url(./images/picture1.webp);
+.carousel {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+  width: 400px;
+  min-width: 100%;
+  height: 800px;
   background-size: cover;
   background-position: center;
-  position: relative;
+  display: none; /* Hide all items by default */
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative; /* Added for positioning child elements */
 }
 
-.btn {
-  font-size: 14px;
+.carousel-item.active {
+  display: flex; /* Show the active item as flex for centering */
+}
 
+.text-box {
+  width: 24%;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  text-align: left;
+}
+
+.carousel-control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.carousel-control.prev {
+  left: 10px;
+}
+
+.carousel-control.next {
+  right: 10px;
+}
+
+.btn,
+.btn1 {
+  font-size: 14px;
   border-radius: 3px;
   width: 50%;
   height: 58%;
   cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  border: none;
 }
 
 .btn:hover,
 .btn:active,
 .btn1:hover,
 .btn1:active {
-  background-color: #e4dcd19c;
+  background-color: rgba(228, 220, 209, 0.6);
   color: #fff;
 }
-
-.btn1 {
-  font-size: 14px;
-  border-radius: 3px;
-  width: 80%;
-  height: 58%;
-  cursor: pointer;
-}
-
-.item2 {
-  background-image: url(./images/picture22.jpg);
-  background-size: cover;
-  background-position: center;
-  position: relative;
-}
-
-h3 {
-  color: #f0f0f0;
-  font-size: 24px;
-  font-weight: 400;
-}
-
-.text-box {
-  width: 50%;
-  height: 58px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  position: absolute;
-  top: 50%;
-  left: 10%;
-}
-
-.text-box-2 {
-  width: 50%;
-  height: 58px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  position: absolute;
-  top: 50%;
-  left: 32%;
-}
-
 .Banner {
   display: flex;
   justify-content: space-between;
@@ -136,9 +137,12 @@ h3 {
 }
 
 .logo {
-  height: 6rem;
+  height: 8rem;
   margin-top: 0.5rem;
-  width: 6.8rem;
+  width: 8rem;
+  margin-top: 40px;
+  margin-bottom: 22px;
+  padding: 10px 0;
 }
 
 .header-main {
@@ -161,7 +165,7 @@ h3 {
   display: flex;
   height: auto;
   justify-content: normal;
-  gap: 2rem;
+  gap: 4rem;
 }
 
 .nav--list {
@@ -180,31 +184,58 @@ h3 {
   color: #666;
   cursor: pointer;
 }
-.nav--list:hover > .submenu,
-.submenu:hover {
-  display: block;
-}
-
+/* Ensure the submenu has a high z-index to be on top */
 .submenu {
   position: absolute;
-  top: calc(100% + 16px); /* Adjust the spacing here */
+  top: 100%; /* Move submenu further down */
+  margin-top: 16px;
   left: 0;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: none;
-  padding: 20px; /* Adjust the padding here */
-  width: 300px; /* Adjust the width here */
-  z-index: 1000;
+  visibility: hidden; /* Hide by default */
+  opacity: 0; /* Hide by default */
+  transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition */
+  padding: 20px; /* Adjust the padding */
+  width: 50vw; /* Width up to half of the viewport width */
+  max-width: 1200px; /* Max width to prevent it from being too wide */
+  height: 800px; /* Fixed height to make it more square */
+  z-index: 9999; /* Ensure it is on top */
   border-radius: 10px;
+  display: flex; /* Use Flexbox */
+  flex-direction: column; /* Arrange items in a column */
 }
 
+/* Show submenu on parent hover and when hovering over the submenu */
+.nav--list:hover > .submenu,
 .submenu:hover {
-  display: block;
+  visibility: visible; /* Make visible */
+  opacity: 1; /* Fully opaque */
 }
-.submenu-title {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 12px; /* Adjust the spacing between title and items here */
+
+/* Ensure background blur effect is removed when not hovering */
+.nav--list:not(:hover) {
+  backdrop-filter: none;
+}
+
+/* Submenu items styling */
+.submenu ul {
+  list-style-type: none; /* Remove default list styling */
+  padding: 0;
+  margin: 0;
+  display: flex; /* Use Flexbox for layout */
+  flex-direction: column; /* Arrange items in a column */
+  gap: 20px; /* Adjust space between items if needed */
+}
+
+.submenu ul li {
+  display: flex; /* Flexbox for submenu items */
+}
+
+.submenu ul li a {
+  display: block; /* Make links block level */
+  padding: 8px 0; /* Adjust padding */
+  color: #666;
+  text-decoration: none;
 }
 
 .submenu ul {
@@ -213,30 +244,122 @@ h3 {
   margin: 0;
 }
 
-.submenu ul li a {
-  display: block;
-  padding: 8px 0; /* Adjust the padding here */
-  color: #666;
-  text-decoration: none;
+/* Styling for submenu items with images */
+.submenu-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #eee;
 }
 
-.submenu ul li a:hover {
+.submenu-item:last-child {
+  border-bottom: none;
+}
+
+.submenu-item img {
+  width: 90px; /* Adjust size as needed */
+  height: 90px; /* Adjust size as needed */
+  margin-right: 10px; /* Space between image and text */
+  object-fit: cover; /* Ensure image fits well */
+}
+
+.submenu-item a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+  width: 100%;
+}
+
+.submenu-item a:hover {
   background-color: #f0f0f0;
 }
 
+/* Search bar container */
+.search-bar {
+  position: relative; /* Ensure submenu is positioned correctly */
+}
+
+/* Search input field */
 .search-input {
   padding-bottom: 20px;
-  background-image: url(./images/search-icon-png-8.png);
-  background-size: 35px;
+  background-image: url("./images/search-icon-png-8.png"); /* Ensure correct path */
+  background-size: 38px; /* Increase size of the background image */
   background-position: left center;
   background-repeat: no-repeat;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  padding: 0.875rem 0 0.875rem 1.875rem;
+  padding: 0.75rem 0 0.75rem 2.75rem; /* Adjust padding to fit larger icon */
   border-radius: 5px;
-  width: 108%;
-  height: 40%;
-  margin-right: 40px;
+  width: 100%; /* Adjust width to fit container */
+  height: 50px; /* Fixed height */
+  margin-right: 60px;
+}
+
+/* Search results container */
+.submenu-search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 300px; /* Adjust as needed */
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 1000;
+  display: none; /* Hidden by default */
+}
+
+/* Display search results when input is not empty */
+.search-input:not(:placeholder-shown) ~ .submenu-search-results {
+  display: block;
+}
+
+.submenu-item-image {
+  width: 40px; /* Adjust width of the image */
+  height: 40px; /* Adjust height of the image */
+  object-fit: cover; /* Ensure the image covers the area without distortion */
+  margin-right: 10px; /* Space between image and text */
+}
+
+/* Styling for individual search results */
+.submenu-search-results ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.submenu-search-results li {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.submenu-search-results li:last-child {
+  border-bottom: none;
+}
+
+.submenu-search-results a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+  width: 100%;
+}
+
+.submenu-search-results a:hover {
+  background-color: #f0f0f0;
+}
+
+/* Message for no search results */
+.submenu-message {
+  padding: 1rem;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+/* Empty state class for hiding results */
+.submenu-search-results.empty {
+  display: none;
 }
 
 .Feature_in {
@@ -266,6 +389,7 @@ h3 {
 .slide_bar {
   max-width: 1200px;
   margin: 0 auto;
+  margin-bottom: 150px;
   margin-top: 112px;
   position: relative;
 }
@@ -277,45 +401,47 @@ h3 {
   font-size: 24px;
   font-weight: 300;
 }
+/* Carousel Container */
+.carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  overflow: hidden;
+}
 
 .Carousal {
   display: flex;
   justify-content: space-evenly;
-  gap: 32px;
+  width: 100%;
+  height: 400px;
+  gap: 5px;
+  transition: transform 0.4s ease;
 }
 
-.Men_watches,
-.Women_bracelet,
-.Women_watches {
-  max-width: 400px;
-  max-height: 400px;
+.slide {
+  border-radius: 5px;
+  width: 350px;
+  height: 400px;
   transition: all 0.4s;
 }
 
-.Men_watches:hover,
-.Women_bracelet:hover,
-.Women_watches:hover {
+.slide:hover {
   transform: scale(1.1);
 }
 
-.Carousal_inner {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 16px;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-.Carousal_inner p {
-  color: #666;
+.slide-hidden {
+  display: none;
 }
 
 h6 {
-  font-weight: 300;
+  font-weight: 400;
+  margin-top: 24px;
+  font-size: 20px;
+  text-align: center;
 }
 
-/* Controls */
+/* Button Styles */
 .btn_carousal {
   background-color: #fff;
   border: none;
@@ -353,6 +479,10 @@ h6 {
   transform: translate(50%, -50%);
 }
 
+.btn--right-adjusted {
+  right: -10px;
+}
+
 .secondary_title_1 {
   margin-top: 112px;
   display: flex;
@@ -372,6 +502,19 @@ h6 {
 .logos img {
   height: 130px;
   width: auto;
+}
+
+.slide-wrapper {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.slide-wrapper.fade-out {
+  opacity: 0;
+}
+
+.brand {
+  gap: 18px;
 }
 
 .outer_Box {
@@ -814,7 +957,11 @@ h6 {
   margin: 0;
 }
 
+/* Style for search results list */
 .nav-list-level3 li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 3px;
 }
 
@@ -828,4 +975,61 @@ h6 {
 .submenu-message {
   color: #666;
   font-size: 14px;
+}
+.selected-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-input-btn {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.plus {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: center;
+  background-color: #fff;
+}
+
+.plus:hover {
+  background-color: #fff;
+}
+
+.btn button {
+  width: 30px; /* Adjust button size as needed */
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toPay {
+  display: inline-block;
+  width: 300px; /* Adjust width as needed */
+  padding: 10px; /* Adjust padding for better appearance */
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  background-color: #ebe71e;
+}
+
+.toPay:hover,
+.toPay:visited {
+  background-color: #b3b015;
+}
+
+.paypal-icon {
+  height: 24px;
+  width: 24px;
+}
+
+.pay-icon {
+  font-size: 24px;
+  vertical-align: middle;
+  height: 24px;
+  width: 24px;
 }

@@ -3,35 +3,34 @@ import CallToAction from "./CallToAction";
 import { IonIcon } from "@ionic/react";
 import Footer from "./footer";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   callOutline,
   calendarClearOutline,
   storefrontOutline,
+  earSharp,
 } from "ionicons/icons";
 
-import menwatch from "./images/menwatch.jpg";
-import Braclet from "./images/bracelet.jpg";
-import womenwatch from "./images/womenwatches.jpg";
-import jewlery1 from "./images/jewelry1.png";
-import jewlery2 from "./images/jewelry2.png";
-import jewlery3 from "./images/jewlery3.webp";
-import jewlery4 from "./images/jewlery4.jpg";
+import artadokht from "./artadokht.json";
+
+import bag from "./images/women's bag.jpg";
+
 import mixingmetals from "./images/mixing metals.webp";
 import image1 from "./images/image1.jpg";
 import image2 from "./images/image2.webp";
 import image3 from "./images/image3.jpg";
 import image4 from "./images/image4.webp";
-
-export default function App() {
+import picture1 from "./images/artadokht.jpg";
+import picture2 from "./images/minimal-summer-sale-50-percent-off-banner-template-design-vector.jpg";
+function App() {
   return (
     <div>
       <Nav />
       <HeroSection />
       <FeatureIn />
-      <TopCategorySlide />
-      <BrandDiversity />
+      <TopCategorySlide data={artadokht} />
+      <BrandDiversity data={artadokht} />
       <FeaturedCombine />
       <CallToAction />
       <Footer />
@@ -40,20 +39,53 @@ export default function App() {
 }
 
 function HeroSection() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    { id: 1, text: "The biggest Sale", buttonClass: "btn", image: picture1 },
+    { id: 2, text: "Explore now", buttonClass: "btn1", image: picture2 },
+  ];
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(nextSlide, 10000); // Change slide every 10 seconds
+    return () => clearInterval(intervalId); // Cleanup on component unmount
+  }, []);
+
   return (
-    <div className="container">
-      <div className="item1">
-        <div className="text-box">
-          <h3>The biggest Sale </h3>
-          <button className="btn">More info</button>
-        </div>
+    <div className="carousel-container-Hero">
+      <div className="carousel-Hero">
+        {slides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className={`carousel-item ${
+              index === currentSlide ? "active" : ""
+            }`}
+            style={{
+              backgroundImage: `url(${slide.image})`,
+            }}
+          >
+            {index === 0 && (
+              <div className="text-box">
+                <button className={slide.buttonClass}>SHOP NOW</button>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
-      <div className="item2">
-        <div className="text-box-2">
-          <h3>Explore now</h3>
-          <button className="btn1">More info</button>
-        </div>
-      </div>
+      <button className="carousel-control prev" onClick={prevSlide}>
+        ‹
+      </button>
+      <button className="carousel-control next" onClick={nextSlide}>
+        ›
+      </button>
     </div>
   );
 }
@@ -91,48 +123,73 @@ function FeatureIn() {
   );
 }
 
-function TopCategorySlide() {
+function TopCategorySlide({ data }) {
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  const { Rings, Bracelet, Necklace, Earrings } = data;
+  const categories = [
+    { name: "Rings", src: Rings[0]?.src },
+    { name: "Bracelet", src: Bracelet[0]?.src },
+    { name: "Necklace", src: Necklace[0]?.src },
+    { name: "Earrings", src: Earrings[0]?.src },
+  ].filter((category) => category.src); // Ensure only valid categories are included
+
+  const getVisibleSlides = (index) => {
+    const totalSlides = categories.length;
+    const prevIndex = (index - 1 + totalSlides) % totalSlides;
+    const nextIndex = (index + 1) % totalSlides;
+    return [prevIndex, index, nextIndex];
+  };
+
+  const handleNext = () => {
+    setSlideIndex((prevIndex) => (prevIndex + 1) % categories.length);
+  };
+
+  const handlePrev = () => {
+    setSlideIndex(
+      (prevIndex) => (prevIndex - 1 + categories.length) % categories.length
+    );
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(handleNext, 10000); // Change slide every 10 seconds
+    return () => clearInterval(intervalId); // Cleanup on component unmount
+  }, []);
+
+  const visibleSlides = getVisibleSlides(slideIndex);
+
   return (
     <div className="slide_bar">
       <h2 className="secondary_title">Top Categories</h2>
       <div className="Carousal">
-        <div>
-          <img src={menwatch} alt="menWatches" className="Men_watches" />
-          <a className="Carousal_inner">
-            <p>for him</p>
-            <h6>Men's Watches</h6>
-          </a>
-        </div>
-
-        <div>
-          <img src={Braclet} alt="Womenbracelets" className="Women_bracelet" />
-          <a className="Carousal_inner">
-            <p>Braclet</p>
-            <h6>Discover now</h6>
-          </a>
-        </div>
-
-        <div>
-          <img
-            src={womenwatch}
-            alt="Womenbracelets"
-            className="Women_watches"
+        {categories.map((category, index) => {
+          const isVisible = visibleSlides.includes(index);
+          return (
+            <div
+              key={index}
+              className={`slide-wrapper ${isVisible ? "" : "slide-hidden"}`}
+            >
+              <img src={category.src} alt={category.name} className="slide" />
+              <h6>{category.name}</h6>
+            </div>
+          );
+        })}
+        <div className="carousel-controls">
+          <Buttons
+            onPrev={handlePrev}
+            onNext={handleNext}
+            rightButtonClass="btn--right-adjusted" // Adjust button position if needed
           />
-          <a className="Carousal_inner">
-            <p>Women's Watches</p>
-            <h6>Discover now</h6>
-          </a>
         </div>
       </div>
-      <Buttons />
     </div>
   );
 }
 
-function Buttons() {
+function Buttons({ onPrev, onNext, rightButtonClass }) {
   return (
     <>
-      <button className="btn_carousal btn--left">
+      <button className="btn_carousal btn--left" onClick={onPrev}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -149,7 +206,12 @@ function Buttons() {
         </svg>
       </button>
 
-      <button className="btn_carousal btn--right">
+      <button
+        className={`btn_carousal btn--right ${
+          rightButtonClass ? rightButtonClass : ""
+        }`}
+        onClick={onNext}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -169,17 +231,48 @@ function Buttons() {
   );
 }
 
-function BrandDiversity() {
+// Function to shuffle an array
+const shuffleArray = (array) => {
+  let shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+function BrandDiversity({ data }) {
+  // Flatten the data into an array of items
+  const allItems = Object.keys(data).flatMap((category) =>
+    data[category].map((item) => ({ ...item, category }))
+  );
+
+  const [items, setItems] = useState(shuffleArray(allItems));
+
+  useEffect(() => {
+    setItems(shuffleArray(allItems));
+  }, [data]);
+
+  const handleNext = () => {
+    setItems((prevItems) => shuffleArray(prevItems));
+  };
+
+  // Handle shuffling when the "Previous" button is clicked
+  const handlePrev = () => {
+    setItems((prevItems) => shuffleArray(prevItems));
+  };
+
   return (
-    <div className="slide_bar">
+    <div className="slide_bar brand">
       <h2 className="secondary_title_1">Our Brand Diversity</h2>
       <div className="logos">
-        <img src={jewlery1} alt="first brand" />
-        <img src={jewlery2} alt="second brand" />
-        <img src={jewlery3} alt="third brand" />
-        <img src={jewlery4} alt="fourth brand" />
+        {items.map((item, index) => (
+          <div key={`${item.category}-${index}`} className="slide-wrapper">
+            <img src={item.src} alt={item.category} className="slide" />
+          </div>
+        ))}
       </div>
-      <Buttons />
+      <Buttons onPrev={handlePrev} onNext={handleNext} rightButtonClass="" />
     </div>
   );
 }
@@ -287,3 +380,5 @@ function FeaturedCombine() {
     </div>
   );
 }
+
+export default App;
